@@ -1,3 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# HTML dosyalarını dil tespitinden çıkar
+*.html linguist-detectable=false
 *.HTML linguist-detectable=false
+
+*.py linguist-detectable=true
+*.java linguist-detectable=true
+
+# Python'un gereksiz dosyalarını hariç tut
+/tests/* linguist-vendored
+/migrations/* linguist-vendored
