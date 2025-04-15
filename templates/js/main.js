@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("kazanimlar").value = savedData.kazanimlar || "";
             document.getElementById("amac").value = savedData.amac || "";
             document.getElementById("gereksinimler").value = savedData.gereksinimler || "";
-            document.getElementById("kullanilacak_programlar").value = savedData.kullanilacak_programlar || "";
-            document.getElementById("yardimciKaynaklar").value = savedData.yardimciKaynaklar || "";
+            document.getElementById("kullanilanProgramlar").value = savedData.kullanilan_programlar || "";
+            document.getElementById("yardimciKaynaklar").value = savedData.yardimci_kaynaklar || "";
     
             document.getElementById("missingDataForm").addEventListener("submit", function (event) {
                 event.preventDefault();
@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("displayGereksinimler").innerText = savedData.gereksinimler || "Bilinmiyor";
         document.getElementById("displayKazanimlar").innerText = savedData.kazanimlar || "Bilinmiyor";
         document.getElementById("displayAmac").innerText = savedData.amac || "Bilinmiyor";
-        document.getElementById("displayKullanilacakProgramlar").innerText = savedData.kullanilacak_programlar || "Bilinmiyor";
-        document.getElementById("displayYardimciKaynaklar").innerText = savedData.yardimciKaynaklar || "Bilinmiyor";
+        document.getElementById("displayKullanilanProgramlar").innerText = savedData.kullanilan_programlar || "Bilinmiyor";
+        document.getElementById("displayYardimciKaynaklar").innerText = savedData.yardimci_kaynaklar || "Bilinmiyor";
 
         // Yazdırma sırasında butonları gizle
         window.onbeforeprint = function () {
@@ -126,8 +126,8 @@ function submitForm() {
         kazanimlar: document.getElementById("kazanimlar").value,
         amac: document.getElementById("amac").value,
         gereksinimler: document.getElementById("gereksinimler").value,
-        kullanilacak_programlar: document.getElementById("kullanilacak_programlar").value,
-        yardimciKaynaklar: document.getElementById("yardimciKaynaklar").value,
+        kullanilan_programlar: document.getElementById("kullanilanProgramlar").value,
+        yardimci_kaynaklar: document.getElementById("yardimciKaynaklar").value,
     };
 
     localStorage.setItem("egitimData", JSON.stringify(formData));
@@ -170,6 +170,7 @@ function convertToWord() {
 
     fileInput.click();
 }
+
 document.addEventListener("DOMContentLoaded", function () {
 
     // 📌 Çıktı sayfasında mıyız?
@@ -179,15 +180,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("displayEgitimAdi").textContent = savedData.egitim_adi || "Bilinmiyor";
         document.getElementById("displayEgitmenAdi").textContent = savedData.egitmen_adi || "Bilinmiyor";
         document.getElementById("displayEgitimSuresi").textContent = savedData.egitim_suresi || "Bilinmiyor";
+        document.getElementById("displayEgitimID").textContent = savedData.id || "Bilinmiyor";
         document.getElementById("displayEgitimOzeti").innerText = savedData.egitim_ozeti || "Bilinmiyor";
         document.getElementById("displayHedefKitle").innerText = savedData.hedef_kitle || "Bilinmiyor";
         document.getElementById("displayKaynakDokumanlar").innerText = savedData.kaynak_dokumanlar || "Bilinmiyor";
-        document.getElementById("displayEgitimID").textContent = savedData.id || "Bilinmiyor";
         document.getElementById("displayGereksinimler").innerText = savedData.gereksinimler || "Bilinmiyor";
         document.getElementById("displayKazanimlar").innerText = savedData.kazanimlar || "Bilinmiyor";
         document.getElementById("displayAmac").innerText = savedData.amac || "Bilinmiyor";
-        document.getElementById("displayKullanilacakProgramlar").innerText = savedData.kullanilacak_programlar || "Bilinmiyor";
-        document.getElementById("displayYardimciKaynaklar").innerText = savedData.yardimciKaynaklar || "Bilinmiyor";
+        document.getElementById("displayKullanilanProgramlar").innerText = savedData.kullanilan_programlar || "Bilinmiyor";
+        document.getElementById("displayYardimciKaynaklar").innerText = savedData.yardimci_kaynaklar || "Bilinmiyor";
 
         // 📌 Yazdırma sırasında butonları gizle
         window.onbeforeprint = function () {

@@ -21,7 +21,7 @@ app.include_router(html_router.router)
 app.include_router(log_router.router)
 app.include_router(pdf_router.router)
 app.include_router(word_router.router)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/js", StaticFiles(directory="templates/js"), name="js")
 
 @app.get("/")
 def root():

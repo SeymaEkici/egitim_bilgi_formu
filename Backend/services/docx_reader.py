@@ -20,7 +20,7 @@ def read_docx(file):
             "gereksinimler": "",  
             "kazanimlar": "",  
             "amac": "",  
-            "kullanilacak_programlar": "" ,
+            "kullanilan_programlar": "" ,
             "yardimci_kaynaklar": ""
         }
 
