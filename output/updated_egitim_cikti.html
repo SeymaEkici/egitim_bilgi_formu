@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çıktı</title>
+    <link rel="icon" href="data:,"> <!-- Favicon ekleme -->
+
+    <script defer src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.0/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: white;
+        }
+
+        .container {
+            width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        .download img {
+            height: 25px;
+            margin-left: 10px;
+        }
+
+        .info-section {
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        .info-item {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-item img {
+            height: 15px;
+            width: auto;
+            margin-right: 8px;
+        }
+
+        h3 {
+            font-size: 14px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .certificate-section img {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .footer {
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            font-size: 12px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media print {
+            .print-buttons {
+                display: none !important;
+            }
+
+            .modal,
+            .modal-content{
+                display: none !important;
+            }
+        }
+
+        /* 📌 Butonları sabitleme */
+        .print-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #1268b8, #97c4df);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="outputContainer">
+        <div class="header">
+            <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/gallery/51/bb2b1a79-8a7f-4c18-970c-6687a910b496/BTKAkademi-Normal.png"
+                alt="BTK Akademi Logo">
+                <div class="download" style="display: flex; gap: 10px; align-items: center;">
+                    <a href="https://apps.apple.com/tr/app/btk-akademi/id1495793302?l=tr" target="_blank" style="display: inline-block;">
+                        <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/gallery/51/78e5e9d0-8ff6-4cc2-ac6f-64bfda53156b/Appstore%404x.png"
+                            alt="App Store" style="border: none; display: block;">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.btk.BTKAkademi" target="_blank" style="display: inline-block;">
+                        <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/gallery/51/23cd79b1-63fc-48c3-a2e7-0f01a0e4761c/playstore%404x.png"
+                            alt="Google Play" style="border: none; display: block;">
+                    </a>
+                </div>
+
+        </div>
+
+        <div class="info-section">
+            <div class="info-item">
+                <span style="font-weight: bold;">Eğitmen Adı:</span> <span id="displayEgitmenAdi"
+                    style="font-weight: normal;"></span>
+            </div>
+            <div class="info-item">
+                <span style="font-weight: bold;">Eğitimin Adı:</span> <span id="displayEgitimAdi"
+                    style="font-weight: normal;"></span>
+            </div>
+            <div class="info-item">
+                <span style="font-weight: bold;">Eğitimin Süresi:</span> <span id="displayEgitimSuresi"
+                    style="font-weight: normal;"></span>
+            </div>
+
+            <div class="info-item">
+                <span style="font-weight: bold;">Eğitim Kodu:</span> <span id="displayEgitimID"
+                    style="font-weight: normal;"></span>
+            </div>
+        </div>
+
+        <!-- Madde Madde Listeleme -->
+        <h3>Eğitim Amacı</h3>
+        <ul id="displayAmac"></ul>
+
+        <h3>Eğitim Özeti</h3>
+        <ul id="displayEgitimOzeti"></ul>
+
+        <h3>Hedef Kitle</h3>
+        <ul id="displayHedefKitle"></ul>
+
+        <h3>Kazanımlar</h3>
+        <ul id="displayKazanimlar"></ul>
+
+        <h3>Gereksinimler</h3>
+        <ul id="displayGereksinimler"></ul>
+
+        <h3>Kullanılan Programlar</h3>
+        <ul id="displayKullanilanProgramlar"></ul>
+
+        <h3>Eğitim Sunumları ve Kaynak Dökümanlar</h3>
+        <ul id="displayKaynakDokumanlar"></ul>
+
+        <h3>Tavsiye Edilen Yardımcı Kaynaklar</h3>
+        <ul id="displayYardimciKaynaklar"></ul>
+
+        <!-- 🔟 Değerlendirme -->
+        <h3>Değerlendirme</h3>
+        <p>Bu eğitimin değerlendirme süreci iki aşamalıdır.</p>
+          <ul>• Video eğitimleri en az %50 oranında izlemeli.<br>• Sınav başarı oranı en az %70 olmalıdır.</ul>
+
+
+        <!-- 12️⃣ Sertifika -->
+        <h3>Sertifika</h3>
+        <p>Sertifika Türü: Katılım Sertifikası.</p>
+        <div class="certificate-section">
+            <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/gallery/51/6d1789a2-5f88-4ab1-945d-ed5dc5143c43/ornek_sertifika.png?t=1740566177543"
+                alt="Sertifika" style="width: 50%; display: block; margin-left: 0;">
+        </div>
+
+
+        <div class="footer"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <p style="margin: 0; padding: 0;">
+                Bilgi Teknolojileri ve İletişim Kurumu, <br>
+                Eskişehir Yolu 10.Km, No: 276, 06530 Çankaya/Ankara
+            </p>
+            <div class="info-item" style="display: flex; align-items: center; gap: 5px;">
+                <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/gallery/51/a6a27c1a-0cfa-4637-ac75-fd7e11b10a99/mail_icon.png?t=1740567332640"
+                    alt="Destek Hattı">
+                <a href="mailto:destek@btkakademi.gov.tr"
+                    style="color: gray; text-decoration: none; font-weight: normal;">
+                    destek@btkakademi.gov.tr
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Sayfa Dışı Butonlar -->
+    <div class="print-buttons">
+        <button id="printBtn" onclick="printPage()">🖨 Sayfayı Yazdır</button>
+        <button id="wordConvertBtn" onclick="openPdfModal()">📄 Word Olarak İndir</button>
+    </div>
+
+    <!-- 📌 PDF Seçme İçin Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePdfModal()">&times;</span>
+            <h2>📂 PDF Seç ve Word'e Çevir</h2>
+            <input type="file" id="pdfFileInput" accept=".pdf">
+            <button onclick="convertToWord()">📂 Çevir</button>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Arka Plan */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Modal İçerik */
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: darkred;
+        }
+
+        @media print {
+            /* Modal ve içeriğini yazdırma modunda tamamen gizle */
+            .modal,
+            .modal-content {
+                display: none !important;
+            }
+        }
+        
+    </style>
+
+</body>
+
+</html>

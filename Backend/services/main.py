@@ -9,10 +9,10 @@ app = FastAPI()
 # CORS ayarları
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5500"],  # Sadece frontend'in portunu izinli hale getir
+    allow_origins=["*"],  # For development, consider restricting this in production
     allow_credentials=True,
-    allow_methods=["*"],  # Her türlü HTTP metoduna izin verir
-    allow_headers=["*"],  # Her türlü header'a izin verir
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Router'ları ekle

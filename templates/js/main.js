@@ -130,8 +130,27 @@ function submitForm() {
         yardimci_kaynaklar: document.getElementById("yardimciKaynaklar").value,
     };
 
+    // Save to localStorage
     localStorage.setItem("egitimData", JSON.stringify(formData));
-    window.location.href = "egitim_cikti.html";
+    
+    // Send to backend for HTML generation
+    fetch("http://127.0.0.1:8001/html/generate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("HTML generated:", data);
+        window.location.href = "egitim_cikti.html";
+    })
+    .catch(error => {
+        console.error("Error generating HTML:", error);
+        // Still navigate to output page using localStorage data
+        window.location.href = "egitim_cikti.html"; 
+    });
 }
 
 // ✅ Yazdırma işlemi

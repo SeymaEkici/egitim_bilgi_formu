@@ -1,9 +1,10 @@
+# Backend/routers/html_router.py
 from fastapi import APIRouter
 from Backend.services.html_generator import generate_html_from_data
 
-router = APIRouter()
+router = APIRouter(prefix="/html", tags=["HTML"])  # Add prefix and tags
 
-@router.post("/html/generate")
+@router.post("/generate")
 async def generate_html_endpoint(data: dict):
     """
     JSON verisini alır ve HTML olarak kaydeder.
