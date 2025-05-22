@@ -10,11 +10,24 @@
     <script defer src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.0/html2pdf.bundle.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background: white;
+        @font-face {
+            font-family: Arial;
+            src: local('Arial');
+            font-weight: normal;
+            font-style: normal;
+        }
+          
+        body, html {
+            font-family: Arial, sans-serif !important;
+            text-rendering: geometricPrecision;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        * {
+            font-family: Arial, sans-serif !important;
+            font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0 !important;
+            font-variant-ligatures: none !important;
+            -webkit-font-variant-ligatures: none !important;
         }
 
         .container {
@@ -23,6 +36,7 @@
             padding: 20px;
             border: 1px solid #ccc;
             text-align: left;
+            font-family: Arial, sans-serif !important;
         }
 
         .header {
@@ -95,12 +109,16 @@
         }
 
         @media print {
+            body, html, * {
+                font-family: Arial, sans-serif !important;
+            }
+            
             .print-buttons {
                 display: none !important;
             }
 
             .modal,
-            .modal-content{
+            .modal-content {
                 display: none !important;
             }
         }
@@ -123,6 +141,17 @@
             background: linear-gradient(to right, #1268b8, #97c4df);
             transform: scale(1.05);
         }
+
+        #displayKaynakDokumanlar a, #displayYardimciKaynaklar a, #displayGereksinimler a {
+            color: black !important; 
+            text-decoration: none !important;
+        }
+
+        #displayKaynakDokumanlar a:hover, #displayYardimciKaynaklar a:hover, #displayGereksinimler a:hover {
+            color: black !important;
+            text-decoration: none !important;
+        }
+
     </style>
 </head>
 
@@ -281,7 +310,7 @@
             .modal,
             .modal-content {
                 display: none !important;
-            }
+            }
         }
         
     </style>

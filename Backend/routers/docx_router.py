@@ -1,9 +1,8 @@
 import traceback
-from fastapi import APIRouter, UploadFile, File, HTTPException # type: ignore
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from Backend.services.docx_reader import read_docx
-from thefuzz import fuzz, process 
-from Backend.services.data_validator import find_best_match
-import traceback  # ✅ Import et
+# Bu import satırını değiştirin:
+from Backend.services.data_validator import find_best_match  # İmport et, tanımlama
 
 router = APIRouter(prefix="/docx", tags=["DOCX"])
 
@@ -24,7 +23,8 @@ async def read_uploaded_docx(file: UploadFile = File(...)):
         print(error_message)
         raise HTTPException(status_code=500, detail=error_message)
     
-def find_best_match(key, choices, threshold=60):  
-    """İsim benzerliği olan keyleri eşleştiriyor"""
-    best_match, score = process.extractOne(key, choices, scorer=fuzz.token_sort_ratio)
-    return best_match if score >= threshold else None
+# Bu fonksiyonu kaldırın, zaten data_validator.py'de var
+# def find_best_match(key, choices, threshold=60):  
+#    """İsim benzerliği olan keyleri eşleştiriyor"""
+#    best_match, score = process.extractOne(key, choices, scorer=fuzz.token_sort_ratio)
+#    return best_match if score >= threshold else None

@@ -10,6 +10,14 @@ def log_message(message):
     logging.info(message)
     print(f"[LOG]: {message}")
 
+def debug_print(title, message):
+    """
+    Hata ayıklama için belirgin şekilde mesajları yazdırır
+    """
+    print(f"\n{'='*20} {title} {'='*20}")
+    print(message)
+    print(f"{'='*50}\n")
+
 # API tarafında input almak mümkün olmadığı için, bu fonksiyon kaldırılabilir.
 # Kullanıcıdan veri almak için frontend veya endpoint kullanmak gerekebilir.
 def log_input(prompt):

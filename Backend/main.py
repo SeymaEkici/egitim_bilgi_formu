@@ -6,6 +6,11 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
+# Debug logları
+print("🚀 Backend uygulaması başlatılıyor...")
+print(f"📂 Çalışma dizini: {os.getcwd()}")
+
+# CORS ayarları
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,13 +19,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Router'ları dahil et
+print("🔄 Router'lar yükleniyor...")
 app.include_router(docx_router.router)
 app.include_router(html_router.router)
 app.include_router(log_router.router)
 app.include_router(pdf_router.router)
 app.include_router(word_router.router)
 
-app.mount("/js", StaticFiles(directory="templates/js"), name="js")
+# Static dosyalar
+try:
+    app.mount("/js", StaticFiles(directory="templates/js"), name="js")
+    print("✅ JS klasörü mount edildi")
+except Exception as e:
+    print(f"❌ JS klasörü mount edilirken hata: {str(e)}")
 
 @app.get("/")
 def root():
@@ -29,12 +41,5 @@ def root():
 if __name__ == "__main__":
     import uvicorn
 
-    file_path = input("Lütfen dönüştürmek istediğiniz .docx dosyasının tam yolunu girin: ")
-
-    if os.path.exists(file_path) and file_path.endswith(".docx"):
-        print(f"✅ Dosya bulundu: {file_path}")
-    else:
-        print("❌ Geçersiz dosya yolu! Lütfen doğru bir .docx dosyası girin.")
-        exit(1)
-
+    print("\n✅ Backend API sunucusu başlatılıyor...")
     uvicorn.run("Backend.main:app", host="127.0.0.1", port=8001, reload=True)

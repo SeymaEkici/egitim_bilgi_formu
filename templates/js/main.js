@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("displayEgitimSuresi").innerText = savedData.egitim_suresi || "Bilinmiyor";
         document.getElementById("displayEgitimOzeti").innerText = savedData.egitim_ozeti || "Bilinmiyor";
         document.getElementById("displayHedefKitle").innerText = savedData.hedef_kitle || "Bilinmiyor";
-        document.getElementById("displayKaynakDokumanlar").innerText = savedData.kaynak_dokumanlar || "Bilinmiyor";
+     
         document.getElementById("displayGereksinimler").innerText = savedData.gereksinimler || "Bilinmiyor";
         document.getElementById("displayKazanimlar").innerText = savedData.kazanimlar || "Bilinmiyor";
         document.getElementById("displayAmac").innerText = savedData.amac || "Bilinmiyor";
@@ -132,6 +132,8 @@ function submitForm() {
 
     // Save to localStorage
     localStorage.setItem("egitimData", JSON.stringify(formData));
+
+
     
     // Send to backend for HTML generation
     fetch("http://127.0.0.1:8001/html/generate", {
@@ -196,18 +198,48 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("outputContainer")) {
         let savedData = JSON.parse(localStorage.getItem("egitimData") || "{}");
 
+        // Kaynak Dokümanlar formatlaması 
+        if (savedData.gereksinimler) {
+            const inputText = savedData.gereksinimler;
+            const formattedText = inputText.replace(/https?:\/\/[^\s]+/g, (url) => {
+                return `<a href="${url}" target="_blank" style="color:black; text-decoration:none;">${url}</a>`;
+            }).replace(/\n/g, "<br>");
+            document.getElementById("displayGereksinimler").innerHTML = formattedText;
+        } else {
+            document.getElementById("displayGereksinimler").innerHTML = "Bilinmiyor";
+        }
+
+        // Kaynak Dokümanlar formatlaması 
+        if (savedData.kaynak_dokumanlar) {
+            const inputText = savedData.kaynak_dokumanlar;
+            const formattedText = inputText.replace(/https?:\/\/[^\s]+/g, (url) => {
+                return `<a href="${url}" target="_blank" style="color:black; text-decoration:none;">${url}</a>`;
+            }).replace(/\n/g, "<br>");
+            document.getElementById("displayKaynakDokumanlar").innerHTML = formattedText;
+        } else {
+            document.getElementById("displayKaynakDokumanlar").innerHTML = "Bilinmiyor";
+        }
+
+        // Yardımcı Kaynaklar formatlaması 
+        if (savedData.yardimci_kaynaklar) {
+            const inputText = savedData.yardimci_kaynaklar;
+            const formattedText = inputText.replace(/https?:\/\/[^\s]+/g, (url) => {
+                return `<a href="${url}" target="_blank" style="color:black; text-decoration:none;">${url}</a>`;
+            }).replace(/\n/g, "<br>");
+            document.getElementById("displayYardimciKaynaklar").innerHTML = formattedText;
+        } else {
+            document.getElementById("displayYardimciKaynaklar").innerHTML = "Bilinmiyor";
+        }
+      
         document.getElementById("displayEgitimAdi").textContent = savedData.egitim_adi || "Bilinmiyor";
         document.getElementById("displayEgitmenAdi").textContent = savedData.egitmen_adi || "Bilinmiyor";
         document.getElementById("displayEgitimSuresi").textContent = savedData.egitim_suresi || "Bilinmiyor";
         document.getElementById("displayEgitimID").textContent = savedData.id || "Bilinmiyor";
         document.getElementById("displayEgitimOzeti").innerText = savedData.egitim_ozeti || "Bilinmiyor";
         document.getElementById("displayHedefKitle").innerText = savedData.hedef_kitle || "Bilinmiyor";
-        document.getElementById("displayKaynakDokumanlar").innerText = savedData.kaynak_dokumanlar || "Bilinmiyor";
-        document.getElementById("displayGereksinimler").innerText = savedData.gereksinimler || "Bilinmiyor";
         document.getElementById("displayKazanimlar").innerText = savedData.kazanimlar || "Bilinmiyor";
         document.getElementById("displayAmac").innerText = savedData.amac || "Bilinmiyor";
         document.getElementById("displayKullanilanProgramlar").innerText = savedData.kullanilan_programlar || "Bilinmiyor";
-        document.getElementById("displayYardimciKaynaklar").innerText = savedData.yardimci_kaynaklar || "Bilinmiyor";
 
         // 📌 Yazdırma sırasında butonları gizle
         window.onbeforeprint = function () {
