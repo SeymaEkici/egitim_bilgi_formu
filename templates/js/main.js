@@ -40,9 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.getElementById("displayAmac")) {
             document.getElementById("displayAmac").innerText = savedData.amac || "Bilinmiyor";
         }
-        if (document.getElementById("displayKullanilanProgramlar")) {
-            document.getElementById("displayKullanilanProgramlar").innerText = savedData.kullanilan_programlar || "Bilinmiyor";
-        }
 
         // Link formatlaması ile özel alanlar
         // Gereksinimler formatlaması
@@ -83,6 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("displayYardimciKaynaklar").innerHTML = "Bilinmiyor";
             }
         }
+
+        // Kullanılan programlar (linklenebilir yap)
+        if (document.getElementById("displayKullanilanProgramlar")) {
+            if (savedData.kullanilan_programlar) {
+                const inputText = savedData.kullanilan_programlar;
+                const formattedText = inputText.replace(/https?:\/\/[^\s]+/g, (url) => {
+                    return `<a href="${url}" target="_blank" style="color:black; text-decoration:none;">${url}</a>`;
+                }).replace(/\n/g, "<br>");
+                document.getElementById("displayKullanilanProgramlar").innerHTML = formattedText;
+            } else {
+                document.getElementById("displayKullanilanProgramlar").innerHTML = "Bilinmiyor";
+            }
+        }
+                
 
         // 📌 Yazdırma sırasında butonları gizle
         window.onbeforeprint = function () {
