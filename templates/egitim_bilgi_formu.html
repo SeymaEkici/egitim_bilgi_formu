@@ -11,15 +11,16 @@
         * {
             font-feature-settings: "liga" 0, "clig" 0 !important;
             font-variant-ligatures: none !important;
-          }
+        }
 
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f4f4f4;
+            padding: 20px;
         }
 
         .container {
@@ -28,11 +29,33 @@
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 400px;
+            width: 450px;
+            max-width: 90%;
         }
 
         h2 {
             color: #329cb2;
+            margin-bottom: 20px;
+        }
+
+        .file-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .file-section h3 {
+            color: #287c91;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .file-section p {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
 
         input[type="file"] {
@@ -42,6 +65,13 @@
             width: 90%;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: white;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
         }
 
         button {
@@ -52,24 +82,168 @@
             cursor: pointer;
             border-radius: 5px;
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 20px;
             width: 100%;
         }
 
         button:hover {
             background-color: #287c91;
         }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .required {
+            color: red;
+            font-weight: bold;
+        }
+
+        .optional {
+            color: #888;
+            font-style: italic;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>📄 .DOCX Dosyanızı Seçin</h2>
+        <h2>📄 Eğitim Dokümanlarını Yükleyin</h2>
         <form id="uploadForm">
-            <input type="file" id="fileInput" accept=".docx" required>
+            
+            <!-- Ana Eğitim Dosyası -->
+            <div class="file-section">
+                <h3>1. Ana Eğitim Dokümanı <span class="required">*</span></h3>
+                <p>Eğitim bilgilerini içeren ana Word dosyanızı seçin</p>
+                <input type="file" id="mainFileInput" accept=".docx" required>
+                <div class="file-info" id="mainFileInfo"></div>
+            </div>
+
+            <!-- Kaynak Dokümanlar Dosyası -->
+            <div class="file-section">
+                <h3>2. Kaynak Dokümanlar <span class="optional">(İsteğe Bağlı)</span></h3>
+                <p>Ek kaynak linklerini ve dokümanları içeren Word dosyanızı seçin</p>
+                <input type="file" id="resourceFileInput" accept=".docx">
+                <div class="file-info" id="resourceFileInfo"></div>
+            </div>
+
             <button id="submitButton" type="submit">Devam Et</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Dosya seçimi için bilgi gösterimi
+            document.getElementById("mainFileInput").addEventListener("change", function(e) {
+                const file = e.target.files[0];
+                const infoDiv = document.getElementById("mainFileInfo");
+                if (file) {
+                    infoDiv.innerHTML = `<span style="color: green;">✓</span> Seçilen dosya: ${file.name}`;
+                } else {
+                    infoDiv.innerHTML = "";
+                }
+            });
+
+            document.getElementById("resourceFileInput").addEventListener("change", function(e) {
+                const file = e.target.files[0];
+                const infoDiv = document.getElementById("resourceFileInfo");
+                if (file) {
+                    infoDiv.innerHTML = `<span style="color: green;">✓</span> Seçilen dosya: ${file.name}`;
+                } else {
+                    infoDiv.innerHTML = "";
+                }
+            });
+
+            // Form gönderimi
+            document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                const mainFile = document.getElementById("mainFileInput").files[0];
+                const resourceFile = document.getElementById("resourceFileInput").files[0];
+                
+                if (!mainFile) {
+                    alert("Lütfen ana eğitim dokümanını seçin!");
+                    return;
+                }
+
+                const submitButton = document.getElementById("submitButton");
+                submitButton.disabled = true;
+                submitButton.textContent = "Yükleniyor...";
+
+                try {
+                    // Ana dosyayı işle
+                    console.log("📤 Ana dosya backend'e gönderiliyor...");
+                    let mainFormData = new FormData();
+                    mainFormData.append("file", mainFile);
+
+                    let mainResponse = await fetch("http://127.0.0.1:8001/docx/read", {
+                        method: "POST",
+                        body: mainFormData
+                    });
+
+                    if (!mainResponse.ok) {
+                        throw new Error("Ana dosya yükleme başarısız! HTTP Hata: " + mainResponse.status);
+                    }
+
+                    let mainResult = await mainResponse.json();
+                    console.log("✅ Ana dosya JSON Yanıtı:", mainResult);
+
+                    let combinedData = mainResult.parsed_data || {};
+
+                    // Kaynak dosyası varsa onu da işle
+                    if (resourceFile) {
+                        console.log("📤 Kaynak dosyası backend'e gönderiliyor...");
+                        let resourceFormData = new FormData();
+                        resourceFormData.append("file", resourceFile);
+
+                        let resourceResponse = await fetch("http://127.0.0.1:8001/docx/read", {
+                            method: "POST",
+                            body: resourceFormData
+                        });
+
+                        if (resourceResponse.ok) {
+                            let resourceResult = await resourceResponse.json();
+                            console.log("✅ Kaynak dosyası JSON Yanıtı:", resourceResult);
+                            
+                            // Kaynak dosyasından gelen verileri birleştir
+                            if (resourceResult.parsed_data) {
+                                // Kaynak dokümanlar alanlarını birleştir
+                                if (resourceResult.parsed_data.kaynak_dokumanlar) {
+                                    combinedData.kaynak_dokumanlar = (combinedData.kaynak_dokumanlar || "") + 
+                                        "\n" + resourceResult.parsed_data.kaynak_dokumanlar;
+                                }
+                                if (resourceResult.parsed_data.yardimci_kaynaklar) {
+                                    combinedData.yardimci_kaynaklar = (combinedData.yardimci_kaynaklar || "") + 
+                                        "\n" + resourceResult.parsed_data.yardimci_kaynaklar;
+                                }
+                                // "Kurulum Dosya Bağlantıları" bilgilerini "Kullanılan Programlar"a ekle
+                                if (resourceResult.parsed_data.kurulum_dosya_baglantilari) {
+                                    combinedData.kullanilan_programlar = (combinedData.kullanilan_programlar || "") + 
+                                        "\n" + resourceResult.parsed_data.kurulum_dosya_baglantilari;
+                                }
+                            }
+                        } else {
+                            console.warn("Kaynak dosyası işlenemedi, ana dosya ile devam ediliyor");
+                        }
+                    }
+
+                    console.log("📂 Kaydedilecek Birleştirilmiş Veri:", combinedData);
+                    localStorage.setItem("egitimData", JSON.stringify(combinedData));
+                    
+                    console.log("💾 localStorage Verisi:", localStorage.getItem("egitimData"));
+                    window.location.href = "eksik_veri_formu.html";
+
+                } catch (error) {
+                    console.error("Hata:", error);
+                    alert("Dosya yükleme başarısız! Hata: " + error.message);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Devam Et";
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

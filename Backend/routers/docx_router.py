@@ -22,9 +22,3 @@ async def read_uploaded_docx(file: UploadFile = File(...)):
         error_message = f"DOCX okuma hatası: {str(e)}\n{traceback.format_exc()}"
         print(error_message)
         raise HTTPException(status_code=500, detail=error_message)
-    
-# Bu fonksiyonu kaldırın, zaten data_validator.py'de var
-# def find_best_match(key, choices, threshold=60):  
-#    """İsim benzerliği olan keyleri eşleştiriyor"""
-#    best_match, score = process.extractOne(key, choices, scorer=fuzz.token_sort_ratio)
-#    return best_match if score >= threshold else None

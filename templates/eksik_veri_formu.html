@@ -6,21 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eksik Veri Formu</title>
     <link rel="icon" href="data:,"> <!-- Favicon ekleme -->
-    <script defer src="js/main.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
         }
 
         * {
             font-feature-settings: "liga" 0, "clig" 0 !important;
             font-variant-ligatures: none !important;
-          }
+        }
         
         .container {
             background: white;
@@ -28,20 +29,35 @@
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 400px;
+            width: 500px;
+            max-width: 90%;
         }
 
         h2 {
             color: #329cb2;
+            margin-bottom: 25px;
         }
 
-        input[type="text"] {
+        input[type="text"], textarea {
             display: block;
             margin: 10px auto;
-            padding: 10px;
+            padding: 12px;
             width: 90%;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #329cb2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(50, 156, 178, 0.3);
         }
 
         button {
@@ -52,70 +68,194 @@
             cursor: pointer;
             border-radius: 5px;
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 20px;
             width: 100%;
+            transition: background-color 0.3s;
         }
 
         button:hover {
             background-color: #287c91;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .required {
+            color: red;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Eksik Verileri Tamamlayın</h2>
+        <h2>📝 Eksik Verileri Tamamlayın</h2>
         <form id="missingDataForm">
-            <input type="text" id="egitmenAdi" placeholder="Eğitmen Adı">
-            <input type="text" id="egitimAdi" placeholder="Eğitimin Adı">
-            <input type="text" id="egitimSuresi" placeholder="Eğitimin Süresi">
-            <input type="text" id="id" placeholder="Eğitim ID (Zorunlu)">
-            <textarea id="amac" placeholder="Eğitim Amacı"></textarea>
-            <textarea id="egitimOzeti" placeholder="Eğitim Özeti"></textarea>
-            <textarea id="hedefKitle" placeholder="Hedef Kitle"></textarea>
-            <textarea id="kazanimlar" placeholder="Kazanımlar"></textarea>
-            <textarea id="gereksinimler" placeholder="Gereksinimler"></textarea>
-            <textarea id="kullanilanProgramlar" placeholder="Kullanılan Programlar"></textarea>
-            <textarea id="kaynakDokumanlar" placeholder="Eğitim Sunumları ve Kaynak Dokümanlar"></textarea>
-            <textarea id="yardimciKaynaklar" placeholder="Yardımcı Kaynaklar"></textarea>
-            <button id="submitButton" type="button">Verileri Kaydet</button>
+            <div class="form-group">
+                <label for="id">Eğitim ID <span class="required">*</span></label>
+                <input type="text" id="id" placeholder="Eğitim ID (Zorunlu)" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="egitmenAdi">Eğitmen Adı</label>
+                <input type="text" id="egitmenAdi" placeholder="Eğitmen Adı">
+            </div>
+            
+            <div class="form-group">
+                <label for="egitimAdi">Eğitimin Adı</label>
+                <input type="text" id="egitimAdi" placeholder="Eğitimin Adı">
+            </div>
+            
+            <div class="form-group">
+                <label for="egitimSuresi">Eğitimin Süresi</label>
+                <input type="text" id="egitimSuresi" placeholder="Örn: 10 Saat">
+            </div>
+            
+            <div class="form-group">
+                <label for="amac">Eğitim Amacı</label>
+                <textarea id="amac" placeholder="Eğitim Amacı"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="egitimOzeti">Eğitim Özeti</label>
+                <textarea id="egitimOzeti" placeholder="Eğitim Özeti"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="hedefKitle">Hedef Kitle</label>
+                <textarea id="hedefKitle" placeholder="Hedef Kitle (Her satıra bir madde)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="kazanimlar">Kazanımlar</label>
+                <textarea id="kazanimlar" placeholder="Kazanımlar (Her satıra bir madde)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="gereksinimler">Gereksinimler</label>
+                <textarea id="gereksinimler" placeholder="Gereksinimler (Her satıra bir madde)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="kullanilanProgramlar">Kullanılan Programlar</label>
+                <textarea id="kullanilanProgramlar" placeholder="Kullanılan Programlar (Her satıra bir madde)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="kaynakDokumanlar">Eğitim Sunumları ve Kaynak Dokümanlar</label>
+                <textarea id="kaynakDokumanlar" placeholder="Kaynak Dokümanlar (Her satıra bir madde, linkler dahil)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="yardimciKaynaklar">Yardımcı Kaynaklar</label>
+                <textarea id="yardimciKaynaklar" placeholder="Yardımcı Kaynaklar (Her satıra bir madde, linkler dahil)"></textarea>
+            </div>
+            
+            <button id="submitButton" type="button">📋 Verileri Kaydet ve Devam Et</button>
         </form>
-        
-
-        <script>
-            function submitForm() {
-                const formData = {
-                    egitmenAdi: document.getElementById("egitmenAdi").value,
-                    egitimAdi: document.getElementById("egitimAdi").value,
-                    egitimSuresi: document.getElementById("egitimSuresi").value,
-                    id: document.getElementById("id").value,
-                    amac: document.getElementById("amac").value,
-                    egitimOzeti: document.getElementById("egitimOzeti").value,
-                    hedefKitle: document.getElementById("hedefKitle").value,
-                    kazanimlar: document.getElementById("kazanimlar").value,
-                    gereksinimler: document.getElementById("gereksinimler").value,
-                    kullanilan_programlar: document.getElementById("kullanilanProgramlar").value,
-                    kaynakDokumanlar: document.getElementById("kaynakDokumanlar").value,
-                    yardimciKaynaklar: document.getElementById("yardimciKaynaklar").value,
-                };
-        
-                console.log("✅ Form Verileri:", formData);
-            }
-        
-            // 📌 Sayfa tamamen yüklenmeden önce butonu arama!
-            document.addEventListener("DOMContentLoaded", function () {
-                let submitButton = document.getElementById("submitButton");
-        
-                if (submitButton) {
-                    submitButton.addEventListener("click", submitForm);
-                } else {
-                    console.error("⛔ Hata: submitButton bulunamadı!");
-                }
-            });
-        </script>
-        
-
     </div>
+
+    <script>
+        // ✏️ submitForm fonksiyonunu tanımla
+        function submitForm() {
+            console.log("📋 submitForm fonksiyonu çalıştı!");
+            
+            // ID alanı zorunlu kontrol
+            const idValue = document.getElementById("id").value.trim();
+            if (!idValue) {
+                alert("Eğitim ID alanı zorunludur!");
+                return;
+            }
+
+            let formData = {
+                id: document.getElementById("id").value,
+                egitim_adi: document.getElementById("egitimAdi").value,
+                egitmen_adi: document.getElementById("egitmenAdi").value,
+                egitim_suresi: document.getElementById("egitimSuresi").value,
+                egitim_ozeti: document.getElementById("egitimOzeti").value,
+                hedef_kitle: document.getElementById("hedefKitle").value,
+                kaynak_dokumanlar: document.getElementById("kaynakDokumanlar").value,
+                kazanimlar: document.getElementById("kazanimlar").value,
+                amac: document.getElementById("amac").value,
+                gereksinimler: document.getElementById("gereksinimler").value,
+                kullanilan_programlar: document.getElementById("kullanilanProgramlar").value,
+                yardimci_kaynaklar: document.getElementById("yardimciKaynaklar").value,
+            };
+
+            console.log("💾 Kaydedilecek form verisi:", formData);
+
+            // localStorage'a kaydet
+            localStorage.setItem("egitimData", JSON.stringify(formData));
+
+            // Backend'e gönder
+            fetch("http://127.0.0.1:8001/html/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("✅ HTML generated:", data);
+                window.location.href = "egitim_cikti.html";
+            })
+            .catch(error => {
+                console.error("❌ Error generating HTML:", error);
+                // Hata olsa bile localStorage verisi ile devam et
+                window.location.href = "egitim_cikti.html"; 
+            });
+        }
+
+        // 📌 Sayfa yüklendikten sonra çalış
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("✅ Eksik veri formu sayfası yüklendi!");
+            
+            let submitButton = document.getElementById("submitButton");
+            
+            if (submitButton) {
+                submitButton.addEventListener("click", submitForm);
+                console.log("✅ Submit button event listener eklendi!");
+            } else {
+                console.error("⛔ Hata: submitButton bulunamadı!");
+            }
+
+            // localStorage'tan önceki verileri yükle
+            let savedData = JSON.parse(localStorage.getItem("egitimData") || "{}");
+            console.log("💾 localStorage'tan alınan veri:", savedData);
+
+            // Form alanlarını doldur
+            if (savedData) {
+                document.getElementById("id").value = savedData.id || "";
+                document.getElementById("egitimAdi").value = savedData.egitim_adi || "";
+                document.getElementById("egitmenAdi").value = savedData.egitmen_adi || "";
+                document.getElementById("egitimSuresi").value = savedData.egitim_suresi || "";
+                document.getElementById("egitimOzeti").value = savedData.egitim_ozeti || "";
+                document.getElementById("hedefKitle").value = savedData.hedef_kitle || "";
+                document.getElementById("kaynakDokumanlar").value = savedData.kaynak_dokumanlar || "";
+                document.getElementById("kazanimlar").value = savedData.kazanimlar || "";
+                document.getElementById("amac").value = savedData.amac || "";
+                document.getElementById("gereksinimler").value = savedData.gereksinimler || "";
+                document.getElementById("kullanilanProgramlar").value = savedData.kullanilan_programlar || "";
+                document.getElementById("yardimciKaynaklar").value = savedData.yardimci_kaynaklar || "";
+                
+                console.log("✅ Form alanları dolduruldu!");
+            }
+        });
+    </script>
 </body>
 
 </html>
